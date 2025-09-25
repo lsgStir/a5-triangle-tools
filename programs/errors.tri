@@ -6,14 +6,14 @@ let
   type Rec ~ record x: Integer, x: Integer end;
 
   var me: Name;
-  var silly : maxint;
+  var maxint : Integer;
   var silly: Rec;
 
   proc putstr (s: String) ~
     let var i: Integer
     in
       begin
-      s[4] := ' ';
+      String[4] := ' ';
       i := 0;
       while i do
         begin i := i+true;

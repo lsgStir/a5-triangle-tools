@@ -336,6 +336,16 @@ public class Parser {
 			commandAST = new WhileCommand(eAST, cAST, commandPos);
 		}
 			break;
+			
+		case REPEAT: {
+			acceptIt();
+			Command cAST = parseSingleCommand();
+			accept(Token.Kind.UNTIL);
+			Expression eAST = parseExpression();
+			finish(commandPos);
+			commandAST = new WhileCommand(eAST, cAST, commandPos);
+		}
+			break;
 
 		case SEMICOLON:
 		case END:

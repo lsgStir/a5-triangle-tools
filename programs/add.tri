@@ -1,0 +1,23 @@
+let
+	var firstInteger: Integer;
+	var secondInteger: Integer;
+	var sum: Integer;
+	var product: Integer
+in
+	begin
+		getint(var firstInteger);
+		getint(var secondInteger);
+		
+		sum := firstInteger + secondInteger;
+		product := firstInteger * secondInteger;
+		
+		putint(sum); puteol();
+		putint(product); puteol();
+		
+		if firstInteger = secondInteger
+			then
+				begin
+					put('S'); put('a'); put('m'); put('e'); put('!');
+				end
+			else
+	end
