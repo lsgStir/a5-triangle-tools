@@ -18,6 +18,8 @@
 
 package triangle.codeGenerator;
 
+import java.rmi.registry.Registry;
+
 import triangle.ErrorReporter;
 import triangle.StdEnvironment;
 import triangle.abstractMachine.Machine;
@@ -44,7 +46,7 @@ import triangle.abstractSyntaxTrees.commands.IfCommand;
 import triangle.abstractSyntaxTrees.commands.LetCommand;
 import triangle.abstractSyntaxTrees.commands.SequentialCommand;
 import triangle.abstractSyntaxTrees.commands.WhileCommand;
-// import triangle.abstractSyntaxTrees.commands.RepeatCommand;
+import triangle.abstractSyntaxTrees.commands.RepeatCommand;
 import triangle.abstractSyntaxTrees.declarations.BinaryOperatorDeclaration;
 import triangle.abstractSyntaxTrees.declarations.ConstDeclaration;
 import triangle.abstractSyntaxTrees.declarations.Declaration;
@@ -187,10 +189,15 @@ public final class Encoder implements ActualParameterVisitor<Frame, Integer>,
 		return null;
 	}
 	
-/* 	@Override
+	@Override
 	public Void visitRepeatCommand(RepeatCommand ast, Frame frame) {
+		var loopAddr = emitter.getNextInstrAddr();
+		ast.C.visit(this, frame);
+		emitter.patch(loopAddr);
+		ast.E.visit(this, frame);
+		emitter.emit(OpCode.JUMPIF, Machine.falseRep, Register.CB, loopAddr);		
 		return null;
-	} */
+	}
 
 	// Expressions
 	@Override
