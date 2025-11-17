@@ -27,6 +27,8 @@ import triangle.syntacticAnalyzer.Parser;
 import triangle.syntacticAnalyzer.Scanner;
 import triangle.syntacticAnalyzer.SourceFile;
 import triangle.treeDrawer.Drawer;
+import com.sampullara.cli.Args;
+import com.sampullara.cli.Argument;
 
 /**
  * The main driver class for the Triangle compiler.
@@ -34,10 +36,15 @@ import triangle.treeDrawer.Drawer;
 public class Compiler {
 
 	/** The filename for the object program, normally obj.tam. */
+	@Argument(alias = "obN", description = "filename for the object program", required = true)
 	static String objectName = "obj.tam";
-	
+
+	@Argument (alias = "sT", description = "flag for whether to show tree", required = true)
 	static boolean showTree = false;
+	@Argument (alias = "f", description = "flag for whether to fold", required = true)
 	static boolean folding = false;
+	@Argument (alias = "sTA", description = "flag for whether to show tree after folding", required = true)
+	static boolean showTreeAfter = false;
 
 	private static Scanner scanner;
 	private static Parser parser;
@@ -63,7 +70,7 @@ public class Compiler {
 	 * @return true iff the source program is free of compile-time errors, otherwise
 	 *         false.
 	 */
-	static boolean compileProgram(String sourceName, String objectName, boolean showingAST, boolean showingTable) {
+	static boolean compileProgram(String sourceName, String objectName, boolean showingAST, boolean showingASTAfter, boolean showingTable) {
 
 		System.out.println("********** " + "Triangle Compiler (Java Version 2.1)" + " **********");
 
@@ -96,6 +103,10 @@ public class Compiler {
 			}
 			if (folding) {
 				theAST.visit(new ConstantFolder());
+			}
+
+			if (showingASTAfter) {
+				drawer.draw(theAST);
 			}
 			
 			if (reporter.getNumErrors() == 0) {
@@ -131,9 +142,9 @@ public class Compiler {
 
 		String sourceName = args[0];
 		
-		var compiledOK = compileProgram(sourceName, objectName, showTree, false);
+		var compiledOK = compileProgram(sourceName, objectName, showTree, showTreeAfter, false);
 
-		if (!showTree) {
+		if (!showTree){
 			System.exit(compiledOK ? 0 : 1);
 		}
 	}
@@ -143,7 +154,10 @@ public class Compiler {
 			var sl = s.toLowerCase();
 			if (sl.equals("tree")) {
 				showTree = true;
-			} else if (sl.startsWith("-o=")) {
+			} else if (sl.startsWith("tree-after")) {
+				showTreeAfter = true;
+			}
+			else if (sl.startsWith("-o=")) {
 				objectName = s.substring(3);
 			} else if (sl.equals("folding")) {
 				folding = true;
