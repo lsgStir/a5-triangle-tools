@@ -279,6 +279,12 @@ public final class Scanner {
 
 		kind = scanToken();
 
+		if (kind == Token.Kind.IDENTIFIER) {
+			if (currentSpelling.toString().equals("loop")) {
+				kind = Token.Kind.LOOP_WHILE;
+			}
+		}
+
 		pos.finish = sourceFile.getCurrentLine();
 		tok = new Token(kind, currentSpelling.toString(), pos);
 		if (debug)
