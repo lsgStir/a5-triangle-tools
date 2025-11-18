@@ -375,8 +375,18 @@ public class Parser {
 			break;
 		}
 
+		case LCURLY: {
+			acceptIt();
+			commandAST = parseCommand();
+			accept(Token.Kind.RCURLY);
+			break;
+		}
+
+
+
 		case SEMICOLON:
 		case END:
+		case RCURLY:
 		case ELSE:
 		case IN:
 		case EOT:
